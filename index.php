@@ -9,7 +9,7 @@ if ($page_code == true) {
                     text-align: center; 
                     margin-top: 200px; 
                     font-weight: 700;
-                    color: #d66247;
+                    color: #ff0000;
                     letter-spacing: 5px;"
                     > Development underway </p>';
 
