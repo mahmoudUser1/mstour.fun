@@ -4,7 +4,7 @@ $page_code = true;
 
 if ($page_code == true) {
 
-    echo '<p> Development underway </p>';
+    echo '<p style="font-size: 100px; "> Development underway </p>';
 
 } else {
 
