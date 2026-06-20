@@ -10,7 +10,7 @@ if ($page_code == true) {
                     margin-top: 200px; 
                     font-weight: 700;
                     color: #d66247;
-                    letter-spacing: -100px;"
+                    letter-spacing: 5px;"
                     > Development underway </p>';
 
 } else {
