@@ -11,7 +11,7 @@ if ($page_code == true) {
                     font-weight: 700;
                     color: #ff0000;
                     letter-spacing: 5px;"
-                    > Development underway </p>';
+                    > Development underway ... </p>';
 
 } else {
 
