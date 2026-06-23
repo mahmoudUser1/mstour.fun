@@ -1,0 +1,150 @@
+@font-face {
+    font-family: "Cairo";
+    src: url("../fonts/Cairo-VariableFont_slnt\,wght.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Cairo";
+    font-weight: 500;
+    background-color: #ececec;
+}
+
+.form-log {
+    width: 300px;
+    margin: 150px auto;
+}
+
+
+.login h2 {
+    text-align: center;
+    text-transform: capitalize;
+    margin-bottom: 30px;
+}
+
+.login input {
+    margin-bottom: 20px;
+    background-color: #dbdbdb;
+}
+
+.login input:focus {
+    background-color: #f5f5f5;
+}
+
+.login button {
+    width: 100%;
+}
+
+/* navbar */
+.sidebar {
+    height: 100vh;
+    background: #1f3c64;
+    color: white;
+}
+
+.sidebar a {
+    color: #cfd8e3;
+    text-decoration: none;
+    display: block;
+    padding: 12px 20px;
+}
+
+.sidebar a:hover,
+.sidebar .active {
+    background: #2f5fa5;
+    color: white;
+}
+
+.card-stat {
+    color: white;
+    border-radius: 12px;
+}
+
+.bg-blue {
+    background: #3b6fd8;
+}
+
+.bg-green {
+    background: #27ae60;
+}
+
+.bg-orange {
+    background: #f39c12;
+}
+
+.bg-red {
+    background: #e74c3c;
+}
+
+.topbar {
+    background: white;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.btn-eye,
+.btn-icon {
+    width: auto !important;
+    padding: 0;
+    margin: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+}
+
+.btn-eye {
+    right: 15px;
+}
+
+.btn-icon {
+    left: 15px;
+}
+
+.imageUser {
+    width: 35px;
+    height: 35px;
+    background-color: #587588;
+    margin-right: 5px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.imageUser img {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    object-fit: cover;
+}
+
+.imageUserpro {
+    width: 150px;
+    height: 150px;
+    background-color: #587588;
+    margin-right: 5px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+}
+
+.imageUserpro img {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    object-fit: cover;
+}
+
+.img-profile-user {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+}
+
+.img-profile-user img {
+    width: 100%;
+
+}
