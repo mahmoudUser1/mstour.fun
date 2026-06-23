@@ -1,7 +1,6 @@
 <?php
 
-$pageTitle = 'home';
-$pagedesc = 'هذه الصفحة التي به الرحلات';
+$pageTitle = 'tours';
 
 include "initials.php";
 

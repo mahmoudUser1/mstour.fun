@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /myproject/
+
+# لو الملف موجود فعلاً بالـ.php اعرضه
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+)$ $1.php [L]
