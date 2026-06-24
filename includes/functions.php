@@ -52,10 +52,10 @@ function renderMetaTags($title = '', $description = '', $keywords = '') {
     $html .= "    <meta name='keywords' content='$final_keys'>\n";
     $html .= "    <meta name='author' content='Manus Agent'>\n";
     
-    // Bootstrap & FontAwesome Offline
-    $base = (strpos($_SERVER['PHP_SELF'], '/admin/') !== false) ? '../' : '';
-    $html .= "    <link rel='stylesheet' href='{$base}assets/vendor/bootstrap/css/bootstrap.min.css'>\n";
-    $html .= "    <link rel='stylesheet' href='{$base}assets/vendor/fontawesome/css/all.min.css'>\n";
+    // Bootstrap & FontAwesome Online (CDN)
+    $html .= "    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'>\n";
+    $html .= "    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>\n";
+    
     if ($_SESSION['lang'] == 'ar') {
         $html .= "    <style>body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl; text-align: right; }</style>\n";
     }

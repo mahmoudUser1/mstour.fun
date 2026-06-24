@@ -2,7 +2,7 @@
 // نظام اللغات
 $languages = [
     'ar' => [
-        'site_name' => 'مانوس ترانسفير',
+        'site_name' => 'MS Tool',
         'home' => 'الرئيسية',
         'notebook' => 'المفكرة',
         'admin_panel' => 'لوحة المسؤول',

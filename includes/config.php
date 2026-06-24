@@ -6,7 +6,7 @@ define('DB_PASS', '$9V7~5aVc');
 define('DB_NAME', 'u527029479_fileSharing');
 
 // إعدادات الموقع
-define('SITE_NAME', 'Manus File Transfer');
+define('SITE_NAME', 'MS Tool');
 define('UPLOAD_DIR', __DIR__ . '/../uploads/');
 define('MAX_FILE_SIZE', 100 * 1024 * 1024); // 100MB
 

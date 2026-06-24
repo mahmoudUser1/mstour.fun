@@ -35,8 +35,9 @@ $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.php">
-                <i class="fas fa-folder-open me-2"></i> <?php echo __('site_name'); ?>
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="index.php">
+                <img src="assets/img/logo.png" alt="Logo" height="40" class="me-2">
+                <?php echo __('site_name'); ?>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -199,6 +200,6 @@ $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

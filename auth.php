@@ -26,7 +26,8 @@ unset($_SESSION['error']);
         <div class="row justify-content-center">
             <div class="col-md-5">
                 <div class="text-center mb-4 text-white">
-                    <h1 class="fw-bold"><i class="fas fa-folder-open me-2"></i> <?php echo __('site_name'); ?></h1>
+                    <img src="assets/img/logo.png" alt="Logo" height="80" class="mb-3">
+                    <h1 class="fw-bold"><?php echo __('site_name'); ?></h1>
                     <p class="opacity-75">إدارة ملفاتك لم تكن بهذه السهولة من قبل</p>
                 </div>
                 
@@ -107,6 +108,6 @@ unset($_SESSION['error']);
         </div>
     </div>
 
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
