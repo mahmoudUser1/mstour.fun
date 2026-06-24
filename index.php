@@ -1,139 +1,204 @@
 <?php
 require_once 'includes/functions.php';
 
-// التحقق من تسجيل الدخول
 if (!isLoggedIn()) {
     header('Location: auth.php');
     exit;
 }
 
 $user = getCurrentUser();
+if (!$user['is_verified']) {
+    header('Location: verify.php');
+    exit;
+}
+
 $current_folder = isset($_GET['folder']) ? (int)$_GET['folder'] : null;
 
-// جلب البيانات (تبسيطاً للعرض)
+// جلب المجلدات
 $stmt = $pdo->prepare("SELECT * FROM folders WHERE user_id = ? AND parent_id " . ($current_folder ? "= ?" : "IS NULL"));
 $current_folder ? $stmt->execute([$user['id'], $current_folder]) : $stmt->execute([$user['id']]);
 $folders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// جلب الملفات
 $stmt = $pdo->prepare("SELECT * FROM files WHERE user_id = ? AND folder_id " . ($current_folder ? "= ?" : "IS NULL"));
 $current_folder ? $stmt->execute([$user['id'], $current_folder]) : $stmt->execute([$user['id']]);
 $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="<?php echo $_SESSION['lang']; ?>" dir="<?php echo __('dir'); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php echo renderMetaTags('الرئيسية', 'إدارة ورفع ملفاتك ومجلداتك بسهولة وأمان.', 'ملفاتي, رفع, تحميل, مشاركة'); ?>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <?php echo renderMetaTags(__('home')); ?>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <a href="index.php" class="brand">📁 <?php echo SITE_NAME; ?></a>
-            <div class="user-menu">
-                <span>مرحباً، <?php echo htmlspecialchars($user['username']); ?></span>
-                <a href="notebook.php" class="btn btn-outline" style="margin-right: 10px;">📓 المفكرة</a>
-                <?php if ($user['is_admin']): ?>
-                    <a href="admin/index.php" class="btn btn-outline" style="margin-right: 10px;">لوحة المسؤول</a>
-                <?php endif; ?>
-                <a href="actions/auth.php?action=logout" class="btn btn-primary">خروج</a>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.php">
+                <i class="fas fa-folder-open me-2"></i> <?php echo __('site_name'); ?>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.php"><i class="fas fa-home me-1"></i> <?php echo __('home'); ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="notebook.php"><i class="fas fa-book me-1"></i> <?php echo __('notebook'); ?></a>
+                    </li>
+                    <?php if ($user['is_admin']): ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="admin/index.php"><i class="fas fa-user-shield me-1"></i> <?php echo __('admin_panel'); ?></a>
+                    </li>
+                    <?php endif; ?>
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a class="nav-link dropdown-toggle btn btn-outline-light btn-sm px-3" href="#" id="langDrop" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-1"></i> <?php echo __('lang_name'); ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="?lang=ar">العربية</a></li>
+                            <li><a class="dropdown-item" href="?lang=en">English</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-danger btn-sm px-3" href="actions/auth.php?action=logout">
+                            <i class="fas fa-sign-out-alt me-1"></i> <?php echo __('logout'); ?>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <div class="main-layout">
-            <!-- المحتوى الرئيسي -->
-            <div class="content-area">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">رفع ملفات جديدة</h2>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm">
+                    <h4 class="mb-0"><i class="fas fa-hdd text-primary me-2"></i> <?php echo __('my_files'); ?></h4>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                            <i class="fas fa-upload me-1"></i> <?php echo __('upload'); ?>
+                        </button>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#folderModal">
+                            <i class="fas fa-folder-plus me-1"></i> <?php echo __('create_folder'); ?>
+                        </button>
                     </div>
-                    <form action="actions/upload.php" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="folder_id" value="<?php echo $current_folder; ?>">
-                        <div class="form-group">
-                            <input type="file" name="files[]" multiple class="form-input" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">بدء الرفع</button>
-                    </form>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">ملفاتي</h2>
-                        <button class="btn btn-outline" onclick="document.getElementById('newFolderModal').style.display='block'">+ مجلد جديد</button>
-                    </div>
-                    
-                    <div class="grid-items">
-                        <!-- المجلدات -->
-                        <?php foreach ($folders as $f): ?>
-                            <div class="item-node">
-                                <span class="item-icon">📁</span>
-                                <a href="?folder=<?php echo $f['id']; ?>" class="item-name"><?php echo htmlspecialchars($f['name']); ?></a>
-                                <span class="item-meta">مجلد</span>
-                            </div>
-                        <?php endforeach; ?>
-
-                        <!-- الملفات -->
-                        <?php foreach ($files as $f): ?>
-                            <div class="item-node">
-                                <span class="item-icon">📄</span>
-                                <span class="item-name"><?php echo htmlspecialchars($f['original_name']); ?></span>
-                                <span class="item-meta"><?php echo formatSize($f['file_size']); ?></span>
-                                <div style="margin-top: 10px; display: flex; gap: 5px; justify-content: center;">
-                                    <a href="viewer.php?id=<?php echo $f['id']; ?>" class="btn btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">عرض</a>
-                                    <a href="actions/download.php?id=<?php echo $f['id']; ?>" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">تحميل</a>
+                <!-- المجلدات -->
+                <div class="row g-3 mb-4">
+                    <?php foreach ($folders as $f): ?>
+                        <div class="col-md-3 col-6">
+                            <div class="card h-100 shadow-sm hover-shadow transition">
+                                <div class="card-body text-center py-4">
+                                    <i class="fas fa-folder fa-3x text-warning mb-3"></i>
+                                    <h6 class="card-title text-truncate mb-0">
+                                        <a href="?folder=<?php echo $f['id']; ?>" class="text-dark text-decoration-none stretched-link">
+                                            <?php echo htmlspecialchars($f['name']); ?>
+                                        </a>
+                                    </h6>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <!-- الملفات -->
+                <div class="bg-white rounded shadow-sm overflow-hidden">
+                    <div class="p-3 border-bottom bg-light">
+                        <h6 class="mb-0"><i class="fas fa-file-alt me-2 text-secondary"></i> <?php echo __('files'); ?></h6>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th><?php echo __('title'); ?></th>
+                                    <th>الحجم</th>
+                                    <th class="text-end">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($files as $f): ?>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-file-invoice fa-lg text-primary me-3"></i>
+                                                <span class="fw-medium"><?php echo htmlspecialchars($f['original_name']); ?></span>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-light text-dark"><?php echo formatSize($f['file_size']); ?></span></td>
+                                        <td class="text-end">
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="viewer.php?id=<?php echo $f['id']; ?>" class="btn btn-outline-primary" title="<?php echo __('view'); ?>">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="actions/download.php?id=<?php echo $f['id']; ?>" class="btn btn-outline-success" title="<?php echo __('download'); ?>">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                                <button class="btn btn-outline-danger" title="<?php echo __('delete'); ?>">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (empty($files) && empty($folders)): ?>
+                                    <tr>
+                                        <td colspan="3" class="text-center py-5 text-muted">
+                                            <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                                            <?php echo __('no_files'); ?>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- الشريط الجانبي (الإعلانات) -->
-            <div class="sidebar">
-                <div class="ad-sidebar">
-                    <?php
-                    $ads = getActiveAds('sidebar');
-                    if ($ads):
-                        $ad = $ads[0];
-                    ?>
-                        <p style="font-size: 0.8rem; color: var(--text-muted);">إعلان ممول</p>
-                        <a href="<?php echo htmlspecialchars($ad['ad_link']); ?>" target="_blank">
-                            <?php if ($ad['image_url']): ?>
-                                <img src="<?php echo htmlspecialchars($ad['image_url']); ?>" alt="AD">
-                            <?php endif; ?>
-                            <h4 style="margin-top: 10px;"><?php echo htmlspecialchars($ad['title']); ?></h4>
-                        </a>
-                    <?php else: ?>
-                        <div style="color: var(--text-muted);">
-                            <p>📢</p>
-                            <p>مساحة إعلانية متوفرة</p>
-                            <p style="font-size: 0.8rem;">تواصل معنا للإعلان</p>
+            <!-- Sidebar Ads -->
+            <div class="col-lg-3">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-0">
+                        <div class="p-3 bg-light border-bottom">
+                            <h6 class="mb-0 text-uppercase small fw-bold text-muted">📢 إعلان ممول</h6>
                         </div>
-                    <?php endif; ?>
+                        <div class="p-3">
+                            <div class="bg-secondary bg-opacity-10 rounded p-4 text-center border border-dashed">
+                                <p class="text-muted mb-0 small">مساحة إعلانية مخصصة</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- مودال مجلد جديد (تبسيط) -->
-    <div id="newFolderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000;">
-        <div class="card" style="width:400px; margin:100px auto;">
-            <h3 class="card-title">إنشاء مجلد جديد</h3>
-            <form action="actions/folder.php" method="POST">
-                <input type="hidden" name="parent_id" value="<?php echo $current_folder; ?>">
-                <div class="form-group">
-                    <input type="text" name="name" class="form-input" placeholder="اسم المجلد" required>
+    <!-- Modals -->
+    <div class="modal fade" id="uploadModal" tabindex="-1">
+        <div class="modal-dialog">
+            <form action="actions/upload.php" method="POST" enctype="multipart/form-data" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><?php echo __('upload'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div style="display:flex; gap:10px;">
-                    <button type="submit" class="btn btn-primary">إنشاء</button>
-                    <button type="button" class="btn btn-outline" onclick="document.getElementById('newFolderModal').style.display='none'">إلغاء</button>
+                <div class="modal-body">
+                    <input type="hidden" name="folder_id" value="<?php echo $current_folder; ?>">
+                    <div class="mb-3">
+                        <label class="form-label">اختر الملفات</label>
+                        <input type="file" name="files[]" class="form-control" multiple required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary w-100"><?php echo __('upload'); ?></button>
                 </div>
             </form>
         </div>
     </div>
+
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

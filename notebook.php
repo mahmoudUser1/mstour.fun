@@ -9,7 +9,6 @@ if (!isLoggedIn()) {
 $user = getCurrentUser();
 $message = '';
 
-// معالجة إضافة ملاحظة/رابط/كلمة مرور
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_note'])) {
     $title = trim($_POST['title']);
     $content = trim($_POST['content']);
@@ -22,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_note'])) {
     }
 }
 
-// حذف ملاحظة
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $stmt = $pdo->prepare("DELETE FROM notes WHERE id = ? AND user_id = ?");
@@ -31,95 +29,97 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
-// جلب الملاحظات
 $stmt = $pdo->prepare("SELECT * FROM notes WHERE user_id = ? ORDER BY created_at DESC");
 $stmt->execute([$user['id']]);
 $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="<?php echo $_SESSION['lang']; ?>" dir="<?php echo __('dir'); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php echo renderMetaTags('المفكرة الذكية', 'احفظ روابطك، كلمات مرورك، وملاحظاتك الهامة في مكان واحد آمن.', 'مفكرة, روابط, كلمات مرور, ملاحظات'); ?>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        .note-card { border-right: 5px solid var(--primary); }
-        .note-type { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; background: var(--primary-light); color: var(--primary); }
-        .type-url { border-right-color: var(--success); }
-        .type-password { border-right-color: var(--danger); }
-    </style>
+    <?php echo renderMetaTags(__('notebook')); ?>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <a href="index.php" class="brand">📁 عودة للملفات</a>
-            <div class="user-menu">
-                <span>مفكرتي الشخصية</span>
-                <a href="actions/auth.php?action=logout" class="btn btn-primary" style="margin-right: 10px;">خروج</a>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.php"><i class="fas fa-folder-open me-2"></i> <?php echo __('site_name'); ?></a>
+            <div class="ms-auto">
+                <a href="index.php" class="btn btn-outline-light btn-sm"><i class="fas fa-arrow-right me-1"></i> عودة للملفات</a>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <div class="main-layout">
-            <div class="content-area">
-                <?php if ($message): ?>
-                    <div class="card" style="background: #d1fae5; color: #065f46;"><?php echo $message; ?></div>
-                <?php endif; ?>
-
-                <div class="card">
-                    <h2 class="card-title">إضافة للمفكرة</h2>
-                    <form method="POST">
-                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label class="form-label">العنوان / الاسم</label>
-                                <input type="text" name="title" class="form-input" placeholder="مثال: رابط Manus، كلمة مرور الفيسبوك" required>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 rounded-4 mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-4"><i class="fas fa-plus-circle text-primary me-2"></i> <?php echo __('add_to_notebook'); ?></h5>
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted"><?php echo __('title'); ?></label>
+                                <input type="text" name="title" class="form-control" required>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">النوع</label>
-                                <select name="type" class="form-input">
-                                    <option value="note">ملاحظة عامة</option>
-                                    <option value="url">رابط URL</option>
-                                    <option value="password">كلمة مرور</option>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted"><?php echo __('type'); ?></label>
+                                <select name="type" class="form-select">
+                                    <option value="note">📝 <?php echo __('note'); ?></option>
+                                    <option value="url">🔗 <?php echo __('url'); ?></option>
+                                    <option value="password">🔑 <?php echo __('password'); ?></option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">المحتوى</label>
-                            <textarea name="content" class="form-input" style="height: 100px;" placeholder="أدخل الرابط أو الملاحظة هنا..."></textarea>
-                        </div>
-                        <button type="submit" name="add_note" class="btn btn-primary">حفظ في المفكرة</button>
-                    </form>
-                </div>
-
-                <div class="grid-items">
-                    <?php foreach ($notes as $n): ?>
-                        <div class="card note-card type-<?php echo $n['type']; ?>">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <span class="note-type"><?php echo $n['type'] == 'url' ? 'رابط' : ($n['type'] == 'password' ? 'كلمة مرور' : 'ملاحظة'); ?></span>
-                                <a href="?delete=<?php echo $n['id']; ?>" style="color: var(--danger); font-size: 0.8rem;" onclick="return confirm('هل أنت متأكد؟')">حذف</a>
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold text-muted"><?php echo __('content'); ?></label>
+                                <textarea name="content" class="form-control" rows="4"></textarea>
                             </div>
-                            <h3 style="font-size: 1rem; margin-bottom: 10px;"><?php echo htmlspecialchars($n['title']); ?></h3>
-                            <div style="background: var(--bg-body); padding: 10px; border-radius: 8px; font-family: monospace; font-size: 0.9rem; word-break: break-all;">
-                                <?php if ($n['type'] == 'url'): ?>
-                                    <a href="<?php echo htmlspecialchars($n['content']); ?>" target="_blank" style="color: var(--primary);"><?php echo htmlspecialchars($n['content']); ?></a>
-                                <?php else: ?>
-                                    <?php echo nl2br(htmlspecialchars($n['content'])); ?>
-                                <?php endif; ?>
+                            <button type="submit" name="add_note" class="btn btn-primary w-100 py-2 fw-bold">
+                                <i class="fas fa-save me-2"></i> <?php echo __('save'); ?>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row g-3">
+                    <?php foreach ($notes as $n): ?>
+                        <div class="col-md-6">
+                            <div class="card h-100 shadow-sm border-0 rounded-4 transition hover-shadow">
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <?php 
+                                            $icon = 'fa-sticky-note'; $color = 'primary';
+                                            if($n['type'] == 'url') { $icon = 'fa-link'; $color = 'success'; }
+                                            if($n['type'] == 'password') { $icon = 'fa-key'; $color = 'danger'; }
+                                        ?>
+                                        <div class="bg-<?php echo $color; ?> bg-opacity-10 p-2 rounded text-<?php echo $color; ?>">
+                                            <i class="fas <?php echo $icon; ?> fa-lg"></i>
+                                        </div>
+                                        <a href="?delete=<?php echo $n['id']; ?>" class="text-danger opacity-50 hover-opacity-100" onclick="return confirm('حذف؟')">
+                                            <i class="fas fa-times-circle"></i>
+                                        </a>
+                                    </div>
+                                    <h6 class="fw-bold mb-2"><?php echo htmlspecialchars($n['title']); ?></h6>
+                                    <div class="bg-light p-3 rounded-3 small text-break font-monospace">
+                                        <?php if ($n['type'] == 'url'): ?>
+                                            <a href="<?php echo htmlspecialchars($n['content']); ?>" target="_blank" class="text-primary text-decoration-none">
+                                                <?php echo htmlspecialchars($n['content']); ?> <i class="fas fa-external-link-alt ms-1 small"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <?php echo nl2br(htmlspecialchars($n['content'])); ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
             </div>
-
-            <div class="sidebar">
-                <div class="ad-sidebar">
-                    <p>📢 مساحة إعلانية</p>
-                </div>
-            </div>
         </div>
     </div>
+
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
