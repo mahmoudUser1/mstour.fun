@@ -1,6 +1,14 @@
 RewriteEngine On
-RewriteBase /myproject/
 
-# لو الملف موجود فعلاً بالـ.php اعرضه
+# إزالة php أو html من الرابط
+RewriteCond %{THE_REQUEST} \s/([^.]+)\.(php|html) [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# تشغيل الملفات بدون الامتداد
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^(.+)$ $1.php [L]
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^/]+)/?$ $1.html [L]
