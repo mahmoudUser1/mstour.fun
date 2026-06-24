@@ -1,9 +1,9 @@
 <?php
 // إعدادات قاعدة البيانات
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', 'root');
-define('DB_NAME', 'file_sharing_site');
+define('DB_HOST', '31.97.198.54');
+define('DB_USER', 'u527029479_MahmoudMaher');
+define('DB_PASS', '$9V7~5aVc');
+define('DB_NAME', 'u527029479_fileSharing');
 
 // إعدادات الموقع
 define('SITE_NAME', 'Manus File Transfer');
