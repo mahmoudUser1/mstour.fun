@@ -5,18 +5,18 @@
  */
 
 // ===== إعدادات قاعدة البيانات =====
-define('DB_HOST', 'YOUR_DATABASE_HOST');      // مثال: localhost
-define('DB_USER', 'YOUR_DATABASE_USERNAME');  // مثال: root
-define('DB_PASS', 'YOUR_DATABASE_PASSWORD');  // كلمة المرور
-define('DB_NAME', 'YOUR_DATABASE_NAME');      // اسم قاعدة البيانات
+define('DB_HOST', '31.97.198.54');      // مثال: localhost
+define('DB_USER', 'u527029479_mahmoud');  // مثال: root
+define('DB_PASS', '~o6PbxE&LLs');  // كلمة المرور
+define('DB_NAME', 'u527029479_file');      // اسم قاعدة البيانات
 
 // ===== إعدادات الموقع =====
 define('SITE_NAME', 'MS Tour Fun');
-define('SITE_URL', 'http://localhost/mstour_fun_v2');
+define('SITE_URL', 'https://mstour.fun');
 define('SITE_DESCRIPTION', 'منصة آمنة لمشاركة الملفات');
 
 // ===== إعدادات البريد الإلكتروني =====
-define('MAIL_FROM', 'noreply@mstour.fun');
+define('MAIL_FROM', 'info@mstour.fun');
 define('MAIL_FROM_NAME', 'MS Tour Fun');
 define('SMTP_HOST', 'YOUR_SMTP_HOST');        // مثال: smtp.gmail.com
 define('SMTP_PORT', 587);
