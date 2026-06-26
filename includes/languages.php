@@ -27,6 +27,14 @@ $translations = [
         'signIn' => 'دخول',
         'dontHaveAccount' => 'ليس لديك حساب؟',
         'alreadyHaveAccount' => 'هل لديك حساب بالفعل؟',
+        'welcome' => 'مرحباً',
+
+        // الملف الشخصي
+        'personalInfo' => 'المعلومات الشخصية',
+        'changePassword' => 'تغيير كلمة المرور',
+        'currentPassword' => 'كلمة المرور الحالية',
+        'newPassword' => 'كلمة المرور الجديدة',
+        'profileUpdatedSuccessfully' => 'تم تحديث الملف الشخصي بنجاح',
 
         // التحقق
         'verificationCode' => 'رمز التحقق',
@@ -35,6 +43,7 @@ $translations = [
         'resendCode' => 'إعادة إرسال الرمز',
         'verifyEmail' => 'التحقق من البريد الإلكتروني',
         'verify' => 'تحقق',
+        'emailVerifiedSuccessfully' => 'تم التحقق من البريد الإلكتروني بنجاح',
 
         // الملفات والمجلدات
         'files' => 'الملفات',
@@ -51,6 +60,7 @@ $translations = [
         'download' => 'تحميل',
         'delete' => 'حذف',
         'rename' => 'إعادة تسمية',
+        'view' => 'عرض',
         'noFiles' => 'لا توجد ملفات',
         'noFolders' => 'لا توجد مجلدات',
 
@@ -73,6 +83,12 @@ $translations = [
         'userStorage' => 'مساحة المستخدم',
         'joinDate' => 'تاريخ الانضمام',
         'lastLogin' => 'آخر دخول',
+
+        // الفوتر والروابط
+        'links' => 'روابط سريعة',
+        'about' => 'عن الموقع',
+        'contact' => 'اتصل بنا',
+        'allRightsReserved' => 'جميع الحقوق محفوظة',
 
         // الرسائل
         'success' => 'نجح',
@@ -97,12 +113,19 @@ $translations = [
         'fileUploadFailed' => 'فشل رفع الملف',
         'invalidEmail' => 'البريد الإلكتروني غير صحيح',
         'passwordTooShort' => 'كلمة المرور قصيرة جداً',
+        'passwordRequirements' => 'يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، حرف كبير، حرف صغير ورقم.',
         'passwordsDoNotMatch' => 'كلمات المرور غير متطابقة',
         'emailAlreadyExists' => 'البريد الإلكتروني موجود بالفعل',
         'invalidCredentials' => 'بيانات الدخول غير صحيحة',
+        'emailNotVerified' => 'البريد الإلكتروني غير مفعل، يرجى تفعيله أولاً.',
         'invalidCode' => 'الرمز غير صحيح',
         'tooManyAttempts' => 'عدد محاولات كثير جداً',
         'required' => 'مطلوب',
+        'invalidFileType' => 'نوع الملف غير مسموح به',
+        'fileTooLarge' => 'حجم الملف كبير جداً',
+        'storageLimit' => 'لقد تجاوزت المساحة التخزينية المتاحة لك',
+        'fileNotFound' => 'الملف غير موجود',
+        'invalidFolderName' => 'اسم المجلد غير صحيح',
     ],
     'en' => [
         // Header and Navigation
@@ -127,6 +150,14 @@ $translations = [
         'signIn' => 'Sign In',
         'dontHaveAccount' => "Don't have an account?",
         'alreadyHaveAccount' => 'Already have an account?',
+        'welcome' => 'Welcome',
+
+        // Profile
+        'personalInfo' => 'Personal Information',
+        'changePassword' => 'Change Password',
+        'currentPassword' => 'Current Password',
+        'newPassword' => 'New Password',
+        'profileUpdatedSuccessfully' => 'Profile updated successfully',
 
         // Verification
         'verificationCode' => 'Verification Code',
@@ -135,6 +166,7 @@ $translations = [
         'resendCode' => 'Resend Code',
         'verifyEmail' => 'Verify Email',
         'verify' => 'Verify',
+        'emailVerifiedSuccessfully' => 'Email verified successfully',
 
         // Files and Folders
         'files' => 'Files',
@@ -151,6 +183,7 @@ $translations = [
         'download' => 'Download',
         'delete' => 'Delete',
         'rename' => 'Rename',
+        'view' => 'View',
         'noFiles' => 'No files',
         'noFolders' => 'No folders',
 
@@ -173,6 +206,12 @@ $translations = [
         'userStorage' => 'User Storage',
         'joinDate' => 'Join Date',
         'lastLogin' => 'Last Login',
+
+        // Footer and Links
+        'links' => 'Quick Links',
+        'about' => 'About Us',
+        'contact' => 'Contact Us',
+        'allRightsReserved' => 'All Rights Reserved',
 
         // Messages
         'success' => 'Success',
@@ -197,12 +236,19 @@ $translations = [
         'fileUploadFailed' => 'File upload failed',
         'invalidEmail' => 'Invalid email address',
         'passwordTooShort' => 'Password is too short',
+        'passwordRequirements' => 'Password must be at least 8 characters long and contain uppercase, lowercase and numbers.',
         'passwordsDoNotMatch' => 'Passwords do not match',
         'emailAlreadyExists' => 'Email already exists',
         'invalidCredentials' => 'Invalid credentials',
+        'emailNotVerified' => 'Email not verified, please verify first.',
         'invalidCode' => 'Invalid code',
         'tooManyAttempts' => 'Too many attempts',
         'required' => 'Required',
+        'invalidFileType' => 'Invalid file type',
+        'fileTooLarge' => 'File is too large',
+        'storageLimit' => 'You have exceeded your storage limit',
+        'fileNotFound' => 'File not found',
+        'invalidFolderName' => 'Invalid folder name',
     ]
 ];
 

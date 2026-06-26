@@ -18,10 +18,6 @@ define('SITE_DESCRIPTION', 'منصة آمنة لمشاركة الملفات');
 // ===== إعدادات البريد الإلكتروني =====
 define('MAIL_FROM', 'info@mstour.fun');
 define('MAIL_FROM_NAME', 'MS Tour Fun');
-define('SMTP_HOST', 'YOUR_SMTP_HOST');        // مثال: smtp.gmail.com
-define('SMTP_PORT', 587);
-define('SMTP_USER', 'YOUR_EMAIL');
-define('SMTP_PASS', 'YOUR_EMAIL_PASSWORD');
 
 // ===== إعدادات المساحة التخزينية =====
 define('STORAGE_LIMIT', 2 * 1024 * 1024 * 1024);  // 2 GB

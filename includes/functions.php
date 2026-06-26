@@ -3,6 +3,15 @@
  * ملف الوظائف المساعدة
  */
 
+// دالة إرسال البريد الإلكتروني باستخدام دالة mail() البسيطة
+function sendEmail($to, $subject, $message) {
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= "From: " . MAIL_FROM_NAME . " <" . MAIL_FROM . ">" . "\r\n";
+    
+    return mail($to, $subject, $message, $headers);
+}
+
 // دالة تنسيق حجم الملف
 function formatFileSize($bytes) {
     $sizes = ['B', 'KB', 'MB', 'GB'];

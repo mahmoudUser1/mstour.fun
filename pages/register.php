@@ -55,14 +55,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES (?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE), NOW())
         ');
         
-        $stmt->execute([$name, $email, $hashed_password, $verification_code]);
-        
-        // حفظ البريد الإلكتروني والرمز في الجلسة للتحقق
-        $_SESSION['verification_email'] = $email;
-        $_SESSION['verification_code'] = $verification_code;
-        
-        // إعادة التوجيه إلى صفحة التحقق
-        redirect(SITE_URL . '/pages/verification.php');
+        if ($stmt->execute([$name, $email, $hashed_password, $verification_code])) {
+            // إرسال بريد التحقق
+            $subject = t('verifyEmail') . " - " . SITE_NAME;
+            $message = "
+                <h2>" . t('welcome') . " " . htmlspecialchars($name) . "</h2>
+                <p>" . t('verificationCodeSent') . "</p>
+                <h1 style='background: #f4f4f4; padding: 10px; text-align: center;'>" . $verification_code . "</h1>
+                <p>" . t('enterVerificationCode') . "</p>
+            ";
+            
+            sendEmail($email, $subject, $message);
+            
+            // حفظ البريد الإلكتروني والرمز في الجلسة للتحقق
+            $_SESSION['verification_email'] = $email;
+            $_SESSION['verification_code'] = $verification_code;
+            
+            // إعادة التوجيه إلى صفحة التحقق
+            redirect(SITE_URL . '/pages/verification.php');
+        } else {
+            $errors['general'] = "حدث خطأ أثناء إنشاء الحساب.";
+        }
     }
 }
 ?>

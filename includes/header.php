@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/includes/languages.php';
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/languages.php';
+require_once __DIR__ . '/functions.php';
 
 $lang = getCurrentLanguage();
 $direction = getDirection($lang);

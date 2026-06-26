@@ -7,6 +7,39 @@ if (!isLoggedIn()) {
 }
 
 $user = getCurrentUser();
+$errors = [];
+$success_msg = "";
+
+// معالجة الطلبات (رفع، حذف، إنشاء مجلد)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
+    
+    if ($action === 'upload' && isset($_FILES['file'])) {
+        $result = saveUploadedFile($_FILES['file'], $user['id']);
+        if ($result['success']) {
+            $success_msg = $result['message'];
+        } else {
+            $errors[] = $result['message'];
+        }
+    } elseif ($action === 'createFolder') {
+        $folderName = trim($_POST['folderName'] ?? '');
+        $result = createFolder($folderName, $user['id']);
+        if ($result['success']) {
+            $success_msg = $result['message'];
+        } else {
+            $errors[] = $result['message'];
+        }
+    } elseif ($action === 'deleteFile') {
+        $fileId = $_POST['fileId'] ?? '';
+        $result = deleteFile($fileId, $user['id']);
+        if ($result['success']) {
+            $success_msg = $result['message'];
+        } else {
+            $errors[] = $result['message'];
+        }
+    }
+}
+
 $files = getUserFiles($user['id']);
 $folders = getUserFolders($user['id']);
 $storage_used = getUserStorageUsed($user['id']);
@@ -18,6 +51,20 @@ $storage_percentage = getStoragePercentage($user['id']);
         <h1><?php echo t('myFiles'); ?></h1>
     </div>
 </div>
+
+<?php if ($success_msg): ?>
+    <div class="alert alert-success"><?php echo htmlspecialchars($success_msg); ?></div>
+<?php endif; ?>
+
+<?php if (!empty($errors)): ?>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            <?php foreach ($errors as $error): ?>
+                <li><?php echo htmlspecialchars($error); ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
 
 <!-- Storage Information -->
 <div class="row mb-4">
@@ -40,7 +87,7 @@ $storage_percentage = getStoragePercentage($user['id']);
 
 <!-- Upload and Create Folder Buttons -->
 <div class="row mb-4">
-    <div class="col-md-6">
+    <div class="col-md-6 mb-3">
         <form method="POST" enctype="multipart/form-data" id="uploadForm">
             <input type="hidden" name="action" value="upload">
             <div class="input-group">
@@ -51,7 +98,7 @@ $storage_percentage = getStoragePercentage($user['id']);
             </div>
         </form>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 mb-3">
         <form method="POST" id="createFolderForm">
             <input type="hidden" name="action" value="createFolder">
             <div class="input-group">
@@ -91,43 +138,45 @@ $storage_percentage = getStoragePercentage($user['id']);
     <div class="row">
         <div class="col-md-12">
             <h4><?php echo t('files'); ?></h4>
-            <table class="table table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th><?php echo t('fileName'); ?></th>
-                        <th><?php echo t('fileSize'); ?></th>
-                        <th><?php echo t('uploadDate'); ?></th>
-                        <th><?php echo t('actions'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($files as $file): ?>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
                         <tr>
-                            <td>
-                                <i class="fas fa-file"></i> 
-                                <?php echo htmlspecialchars($file['original_name']); ?>
-                            </td>
-                            <td><?php echo formatFileSize($file['file_size']); ?></td>
-                            <td><?php echo formatDate($file['uploaded_at']); ?></td>
-                            <td>
-                                <a href="<?php echo SITE_URL; ?>/pages/download.php?id=<?php echo $file['id']; ?>" 
-                                   class="btn btn-sm btn-info" title="<?php echo t('download'); ?>">
-                                    <i class="fas fa-download"></i>
-                                </a>
-                                <form method="POST" style="display: inline;">
-                                    <input type="hidden" name="action" value="deleteFile">
-                                    <input type="hidden" name="fileId" value="<?php echo $file['id']; ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger" 
-                                            onclick="return confirm('<?php echo t('confirm'); ?>')" 
-                                            title="<?php echo t('delete'); ?>">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
+                            <th><?php echo t('fileName'); ?></th>
+                            <th><?php echo t('fileSize'); ?></th>
+                            <th><?php echo t('uploadDate'); ?></th>
+                            <th><?php echo t('actions'); ?></th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($files as $file): ?>
+                            <tr>
+                                <td>
+                                    <i class="fas fa-file"></i> 
+                                    <?php echo htmlspecialchars($file['original_name']); ?>
+                                </td>
+                                <td><?php echo formatFileSize($file['file_size']); ?></td>
+                                <td><?php echo formatDate($file['uploaded_at']); ?></td>
+                                <td>
+                                    <a href="<?php echo SITE_URL; ?>/pages/download.php?id=<?php echo $file['id']; ?>" 
+                                       class="btn btn-sm btn-info" title="<?php echo t('download'); ?>">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    <form method="POST" style="display: inline;">
+                                        <input type="hidden" name="action" value="deleteFile">
+                                        <input type="hidden" name="fileId" value="<?php echo $file['id']; ?>">
+                                        <button type="submit" class="btn btn-sm btn-danger" 
+                                                onclick="return confirm('<?php echo t('confirm'); ?>')" 
+                                                title="<?php echo t('delete'); ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 <?php else: ?>
