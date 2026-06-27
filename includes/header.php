@@ -116,7 +116,7 @@ $user = getCurrentUser();
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i> <?php if ($user) {
-                                    echo htmlspecialchars($user['name']);
+                                    echo htmlspecialchars($user['name'] ?? '');
                                 }
                                 ; ?>
                         </a>
