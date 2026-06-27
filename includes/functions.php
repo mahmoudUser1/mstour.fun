@@ -112,12 +112,17 @@ function isAllowedFileType($filename) {
 // دالة إنشاء مجلد آمن
 function createUploadDirectory($path) {
     if (!is_dir($path)) {
+<<<<<<< HEAD
         if (!mkdir($path, 0777, true)) {
             error_log("Failed to create directory: " . $path);
             return false;
         }
     }
     return true;
+=======
+        mkdir($path, 0755, true);
+    }
+>>>>>>> 03a7eaf3cc07107b36c95589b7bd91e4012d78ed
 }
 
 // دالة حفظ الملف
@@ -143,6 +148,7 @@ function saveUploadedFile($file, $userId) {
     $uploadDir = UPLOAD_DIR . $userId . '/';
     createUploadDirectory($uploadDir);
     
+<<<<<<< HEAD
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     
     // تأمين الملفات الحساسة (مثل PHP) بإضافة امتداد إضافي أو تغيير اسمها
@@ -154,6 +160,9 @@ function saveUploadedFile($file, $userId) {
         $filename = $safe_filename . '.' . $ext;
     }
     
+=======
+    $filename = uniqid() . '_' . basename($file['name']);
+>>>>>>> 03a7eaf3cc07107b36c95589b7bd91e4012d78ed
     $filepath = $uploadDir . $filename;
     
     // نقل الملف

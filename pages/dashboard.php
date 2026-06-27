@@ -85,6 +85,7 @@ $storage_percentage = getStoragePercentage($user['id']);
     </div>
 </div>
 
+<<<<<<< HEAD
 <!-- Action Buttons (Upload & Create Folder) -->
 <div class="row mb-4">
     <div class="col-md-12">
@@ -118,6 +119,31 @@ $storage_percentage = getStoragePercentage($user['id']);
                 </div>
             </div>
         </div>
+=======
+<!-- Upload and Create Folder Buttons -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+            <input type="hidden" name="action" value="upload">
+            <div class="input-group">
+                <input type="file" class="form-control" id="fileInput" name="file" required>
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-upload"></i> <?php echo t('upload'); ?>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 mb-3">
+        <form method="POST" id="createFolderForm">
+            <input type="hidden" name="action" value="createFolder">
+            <div class="input-group">
+                <input type="text" class="form-control" name="folderName" placeholder="<?php echo t('folderName'); ?>" required>
+                <button class="btn btn-success" type="submit">
+                    <i class="fas fa-folder-plus"></i> <?php echo t('createFolder'); ?>
+                </button>
+            </div>
+        </form>
+>>>>>>> 03a7eaf3cc07107b36c95589b7bd91e4012d78ed
     </div>
 </div>
 

@@ -25,6 +25,7 @@ if (!$file) {
 $filepath = $file['file_path'];
 
 if (file_exists($filepath)) {
+<<<<<<< HEAD
     // تحديد نوع المحتوى بناءً على امتداد الملف
     $mime_types = [
         'pdf'  => 'application/pdf',
@@ -50,6 +51,16 @@ if (file_exists($filepath)) {
     header('Content-Disposition: ' . $disposition . '; filename="' . $file['original_name'] . '"');
     header('Content-Length: ' . filesize($filepath));
     header('Cache-Control: public, max-age=3600');
+=======
+    // إعداد الهيدرز للتحميل
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . $file['original_name'] . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($filepath));
+>>>>>>> 03a7eaf3cc07107b36c95589b7bd91e4012d78ed
     
     // قراءة الملف وإرساله للمتصفح
     readfile($filepath);
