@@ -38,11 +38,11 @@ define('DEFAULT_LANGUAGE', 'ar');
 define('SUPPORTED_LANGUAGES', ['ar', 'en']);
 
 // ===== الثوابت الأخرى =====
-<<<<<<< HEAD
-define('ALLOWED_FILE_TYPES', ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar', 'txt', 'php', 'html', 'css', 'js']);
-=======
-define('ALLOWED_FILE_TYPES', ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar', 'txt']);
->>>>>>> 03a7eaf3cc07107b36c95589b7bd91e4012d78ed
+define('ALLOWED_FILE_TYPES', ['pdf', 'doc', 'docx', 'xls', 'xlsx',
+                                'jpg', 'jpeg', 'png', 'gif', 
+                                'zip', 'rar', 'txt', 
+                                'php', 'html', 'css', 'js']);
+
 
 // إنشاء اتصال قاعدة البيانات
 try {
