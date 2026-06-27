@@ -52,38 +52,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="card shadow-lg">
             <div class="card-body p-5">
                 <h2 class="card-title text-center mb-4"><?php echo t('signIn'); ?></h2>
-                
+
                 <?php if ($message): ?>
-                    <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
+                <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
                 <?php endif; ?>
-                
+
                 <?php if (!empty($errors)): ?>
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            <?php foreach ($errors as $error): ?>
-                                <li><?php echo htmlspecialchars($error); ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        <?php foreach ($errors as $error): ?>
+                        <li><?php echo htmlspecialchars($error); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
                 <?php endif; ?>
-                
+
                 <form method="POST">
                     <div class="mb-3">
                         <label for="email" class="form-label"><?php echo t('email'); ?></label>
-                        <input type="email" class="form-control" id="email" name="email" 
-                               value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="password" class="form-label"><?php echo t('password'); ?></label>
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary w-100 mb-3"><?php echo t('signIn'); ?></button>
                 </form>
-                
+
                 <p class="text-center">
-                    <?php echo t('dontHaveAccount'); ?> 
+                    <?php echo t('dontHaveAccount'); ?>
                     <a href="<?php echo SITE_URL; ?>/pages/register.php"><?php echo t('signUp'); ?></a>
                 </p>
             </div>
