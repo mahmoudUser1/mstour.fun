@@ -111,11 +111,14 @@ $user = getCurrentUser();
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo SITE_URL; ?>/admin/index.php"><?php echo t('admin'); ?></a>
                     </li>
-                    <?php endif;?>
+                    <?php endif; ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-bs-toggle="dropdown">
-                            <i class="fas fa-user"></i> <?php echo htmlspecialchars($user['name']); ?>
+                            <i class="fas fa-user"></i> <?php if ($user) {
+                                    echo htmlspecialchars($user['name']);
+                                }
+                                ; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item"
