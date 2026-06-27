@@ -61,13 +61,17 @@ function verifyPassword($password, $hash) {
 // دالة الحصول على معلومات المستخدم الحالي
 function getCurrentUser() {
     global $pdo;
-    if (!isset($_SESSION['user_id'])) {
+
+    if (empty($_SESSION['user_id'])) {
         return null;
     }
-    
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
     $stmt->execute([$_SESSION['user_id']]);
-    return $stmt->fetch();
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $user ?: null;
 }
 
 // دالة التحقق من تسجيل الدخول
